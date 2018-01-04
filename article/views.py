@@ -6,7 +6,11 @@ def keyboard(request):
  
         return JsonResponse({
                 'type' : 'buttons',
-                'buttons' : ['1','2']
+                'buttons' : [
+                    '조선','중앙','동아',
+                    '경향','한겨레',
+                    '한국경제','매일경제'
+                    ]
                 })
  
 @csrf_exempt
@@ -17,11 +21,15 @@ def message(request):
  
         return JsonResponse({
                 'message': {
-                        'text': "you type "+return_str+"!"
+                    'text': "you push this button: "+return_str+"!"
                 },
                 'keyboard': {
                         'type': 'buttons',
-                        'buttons': ['1','2']
-                }
+                        'buttons' : [
+                        '조선','중앙','동아',
+                        '경향','한겨레',
+                        '한국경제','매일경제'
+                        ]
+                 }
         })
 
