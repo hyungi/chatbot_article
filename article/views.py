@@ -63,4 +63,12 @@ def message(request):
                     }
 
                 })
- 
+        else :
+            return JsonResponse({
+                'message':{
+                    'text': content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    },
+                    'buttons' : [
+                    '신문사 고르기', '날짜 고르기', '분야 고르기'
+                    ]
+                })
