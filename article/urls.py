@@ -1,11 +1,15 @@
 from django.conf.urls import url
 from django.contrib import admin
 from . import views
- 
+
 urlpatterns = [
+        
         url(r'^keyboard/',views.keyboard),
         url(r'^message',views.message),
         url(r'^admin/',admin.site.urls)
         ]
 
+'''
+url 주소에 따라 적절한 view를 배정해줌. 7행, 8행은 카카오톡 API를 위해 설정해둔것이고, 9행은 DB구성을 위해 설정함
+'''
 
