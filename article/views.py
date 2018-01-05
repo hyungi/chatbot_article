@@ -72,7 +72,7 @@ def message(request):
                 }
             })
     elif content == u"다시선택하기":
-        numSelected = 0;
+        #numSelected = 0;
         return JsonResponse({
             'message':{
                 'text':'다시 골라주세요!'
@@ -97,6 +97,7 @@ def message(request):
                 }
             })
     elif content == u"신문사 고르기":
+        numSelected = numSelected + 1
         return JsonResponse({
             'message': {
                 'text': "신문사를 골라주세요!"
@@ -107,6 +108,7 @@ def message(request):
                 }
             })
     elif content == u"날짜 고르기":
+        numSelected = numSelected + 1
         return JsonResponse({
             'message': {
                 'text': "날짜를 골라주세요!"
@@ -117,6 +119,7 @@ def message(request):
                 }
             })
     elif content == u"분야 고르기":
+        numSelected = numSelected + 1
         return JsonResponse({
             'message': {
                 'text': "분야를 골라주세요!"
@@ -141,7 +144,7 @@ def message(request):
             if i == content:
                 selectedCategory = content
                 whatContent = "분야"
-        numSelected = numSelected + 1
+        #numSelected = numSelected + 1
         return JsonResponse({
             'message': {
                 'text': whatContent+" 중 "+content+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
