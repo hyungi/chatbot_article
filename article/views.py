@@ -42,6 +42,7 @@ def message(request):
     return_json_str = json.loads(message)
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
+    '''
     if selectedPress is not None and selectedDate is not None :
         if selectedCategory is not None:
             return JsonResponse({
@@ -56,7 +57,9 @@ def message(request):
                     'buttons': ['요청하기','다시선택하기']
                     }
                 })
-    elif content == u"요청하기":
+    elif
+    '''
+    if content == u"요청하기":
         press = selectedPress
         date = selectedDate
         category = selectedCategory
