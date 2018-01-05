@@ -14,6 +14,11 @@ categorylist= ['정치','경제','사회',
 #고객의 요청 정보를 담을 객체 선언을 여기다 하자!
 #request_list > answer.py 라는 걸 만들어서 여기다가 객체를 던져주고 요약한 것을 보내도록 하자
 
+selectedPress = None
+selectedDate = None
+selectedCategory = None
+numSelected = 0
+
 def keyboard(request):
     '''
     :param 카톡플친 API를 통해 넘어온 /keyboard request
@@ -33,29 +38,24 @@ def keyboard(request):
 @csrf_exempt
 def message(request):
 
-    selectedPress = None
-    selectedDate = None
-    selectedCategory = None
-
     message = ((request.body).decode('utf-8'))
     return_json_str = json.loads(message)
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
     
-    if selectedPress is not None and selectedDate is not None :
-        if selectedCategory is not None:
-            return JsonResponse({
-                'message':{
-                    'text': "선택이 완료되었습니다!\n"+
-                    "선택된 신문사: "+selectedPress+
-                    "선택된 날짜: "+selectedDate+
-                    "선택된 분야: "+selectedCategory 
-                    },
-                'keyboard':{
-                    'type':'buttons',
-                    'buttons': ['요청하기','다시선택하기']
-                    }
-                })
+    if numSelected == 3:
+        return JsonResponse({
+            'message':{
+                'text': "선택이 완료되었습니다!\n"+
+                "선택된 신문사: "+selectedPress+
+                "선택된 날짜: "+selectedDate+
+                "선택된 분야: "+selectedCategory 
+                },
+            'keyboard':{
+                'type':'buttons',
+                'buttons': ['요청하기','다시선택하기']
+                }
+            })
     elif content == u"요청하기":
         press = selectedPress
         date = selectedDate
@@ -118,19 +118,24 @@ def message(request):
                 }
             })
     else :
+        whatContent = None
+        
         for i in presslist:
             if i == content:
                 selectedPress = content
+                whatContent = "신문사"
         for i in datelist:
             if i == content:
                 selectedDate = content
+                whatContent = "날짜"
         for i in categorylist:
             if i == content:
                 selectedCategory = content
-
+                whatContent = "분야"
+        numSelected = numSelected + 1
         return JsonResponse({
             'message': {
-                'text': content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                'text': whatContent+" 중 "+content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                 },
             'keyboard': {
                 'type': 'buttons',
