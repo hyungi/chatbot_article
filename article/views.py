@@ -37,13 +37,17 @@ def keyboard(request):
 
 @csrf_exempt
 def message(request):
+    global numSelected
+    global selectedPress
+    global selectedDate
+    global selectedCategory
 
     message = ((request.body).decode('utf-8'))
     return_json_str = json.loads(message)
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
     
-    if numSelected == 3:
+    if  numSelected == 3:
         return JsonResponse({
             'message':{
                 'text': "선택이 완료되었습니다!\n"+
