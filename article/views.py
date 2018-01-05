@@ -47,7 +47,7 @@ def message(request):
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
     
-    if  numSelected == 3:
+    if numSelected == 3:
         return JsonResponse({
             'message':{
                 'text': "선택이 완료되었습니다!\n"+
@@ -139,7 +139,7 @@ def message(request):
         numSelected = numSelected + 1
         return JsonResponse({
             'message': {
-                'text': whatContent+" 중 "+content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                'text': whatContent+" 중 "+content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?\n"+numSelected+": 선택한 가짓수"
                 },
             'keyboard': {
                 'type': 'buttons',
