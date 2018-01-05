@@ -12,9 +12,9 @@ datelist = ['이틀전','어제','오늘']
 categorylist= ['정치','경제','사회',
         '생활/문화','세계','IT/과학','오피니언']
 
-selectedPress
-selectedDate
-selectedCategory
+selectedPress = None
+selectedDate = None
+selectedCategory = None
 
 #고객의 요청 정보를 담을 객체 선언을 여기다 하자!
 #request_list > answer.py 라는 걸 만들어서 여기다가 객체를 던져주고 요약한 것을 보내도록 하자
