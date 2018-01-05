@@ -42,11 +42,15 @@ def message(request):
     global selectedDate
     global selectedCategory
 
+    '''
+    user_key: reqest.body.user_key, //user_key
+    type: reqest.body.type,            //메시지 타입
+    content: reqest.body.content    //메시지 내용
+    '''
     message = ((request.body).decode('utf-8'))
     return_json_str = json.loads(message)
     content = return_json_str['content']
-    #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
-    #요청하기가 정상적으로 작동하지 않음. 
+    #요청하기가 들어오면 다른 .py 파일에서 불러온 기사 요약 정보를 보여줄 수 있도록 하자.
     if content == u"요청하기":
         press = selectedPress
         date = selectedDate
@@ -54,7 +58,6 @@ def message(request):
         selectedDate = None
         selectedPress = None
         selectedCategory = None
-        numSelected = 0; 
         return JsonResponse({
             'message':{
                 'text':"선택한 내용: "+
@@ -80,6 +83,7 @@ def message(request):
                 }
             })
     elif numSelected == 3:
+        numSelected = 0; 
         return JsonResponse({
             'message':{
                 'text': "선택이 완료되었습니다!\n"+
