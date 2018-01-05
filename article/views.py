@@ -52,8 +52,8 @@ def message(request):
             'message':{
                 'text': "선택이 완료되었습니다!\n"+
                 "선택된 신문사: "+selectedPress+
-                "선택된 날짜: "+selectedDate+
-                "선택된 분야: "+selectedCategory 
+                "\n선택된 날짜: "+selectedDate+
+                "\n선택된 분야: "+selectedCategory 
                 },
             'keyboard':{
                 'type':'buttons',
@@ -67,13 +67,13 @@ def message(request):
         selectedDate = None
         selectedPress = None
         selectedCategory = None
-        
+        numSelected = 0; 
         return JsonResponse({
             'message':{
                 'text':"선택한 내용: "+
-                "신문사: "+press+
-                "날짜: "+date+
-                "분야: "+category+
+                "\n신문사: "+press+
+                "\n날짜: "+date+
+                "\n분야: "+category+
                 "\n요약된 기사 내용"
                 },
             'keyboard':{
@@ -139,7 +139,7 @@ def message(request):
         numSelected = numSelected + 1
         return JsonResponse({
             'message': {
-                'text': whatContent+" 중 "+content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?\n"+numSelected+": 선택한 가짓수"
+                'text': whatContent+" 중 "+content+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?\n"+numSelected+": 선택한 가짓수"
                 },
             'keyboard': {
                 'type': 'buttons',
