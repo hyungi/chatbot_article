@@ -11,11 +11,6 @@ datelist = ['이틀전','어제','오늘']
 
 categorylist= ['정치','경제','사회',
         '생활/문화','세계','IT/과학','오피니언']
-
-selectedPress = None
-selectedDate = None
-selectedCategory = None
-
 #고객의 요청 정보를 담을 객체 선언을 여기다 하자!
 #request_list > answer.py 라는 걸 만들어서 여기다가 객체를 던져주고 요약한 것을 보내도록 하자
 
@@ -37,12 +32,16 @@ def keyboard(request):
 
 @csrf_exempt
 def message(request):
-    
+
+    selectedPress = None
+    selectedDate = None
+    selectedCategory = None
+
     message = ((request.body).decode('utf-8'))
     return_json_str = json.loads(message)
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
-    '''
+    
     if selectedPress is not None and selectedDate is not None :
         if selectedCategory is not None:
             return JsonResponse({
@@ -57,9 +56,7 @@ def message(request):
                     'buttons': ['요청하기','다시선택하기']
                     }
                 })
-    elif
-    '''
-    if content == u"요청하기":
+    elif  content == u"요청하기":
         press = selectedPress
         date = selectedDate
         category = selectedCategory
@@ -79,7 +76,7 @@ def message(request):
                 'type':'buttons',
                 'buttons':menulist
                 }
-            })
+            }),press,date,category
     elif content == u"다시선택하기":
         return JsonResponse({
             'message':{
