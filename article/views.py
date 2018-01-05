@@ -58,6 +58,7 @@ def message(request):
         selectedDate = None
         selectedPress = None
         selectedCategory = None
+        numSelected = 0;
         return JsonResponse({
             'message':{
                 'text':"선택한 내용: "+
@@ -72,7 +73,7 @@ def message(request):
                 }
             })
     elif content == u"다시선택하기":
-        #numSelected = 0;
+        numSelected = 0;
         return JsonResponse({
             'message':{
                 'text':'다시 골라주세요!'
@@ -83,7 +84,7 @@ def message(request):
                 }
             })
     elif numSelected == 3:
-        numSelected = 0; 
+        #numSelected = 0; 
         return JsonResponse({
             'message':{
                 'text': "선택이 완료되었습니다!\n"+
