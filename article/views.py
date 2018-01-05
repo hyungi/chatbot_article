@@ -46,7 +46,7 @@ def message(request):
     return_json_str = json.loads(message)
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
- 
+    #요청하기가 정상적으로 작동하지 않음. 
     if content == u"요청하기":
         press = selectedPress
         date = selectedDate
@@ -67,7 +67,7 @@ def message(request):
                 'type':'buttons',
                 'buttons':menulist
                 }
-            }),press,date,category
+            })
     elif content == u"다시선택하기":
         numSelected = 0;
         return JsonResponse({
