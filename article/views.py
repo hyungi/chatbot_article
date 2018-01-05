@@ -46,21 +46,8 @@ def message(request):
     return_json_str = json.loads(message)
     content = return_json_str['content']
     #조건문을 통해서 '신문' 카테고리, '날짜'카테고리, '분야' 카테고리 인지 확인하도록 만들어야함. 
-    
-    if numSelected == 3:
-        return JsonResponse({
-            'message':{
-                'text': "선택이 완료되었습니다!\n"+
-                "선택된 신문사: "+selectedPress+
-                "\n선택된 날짜: "+selectedDate+
-                "\n선택된 분야: "+selectedCategory 
-                },
-            'keyboard':{
-                'type':'buttons',
-                'buttons': ['요청하기','다시선택하기']
-                }
-            })
-    elif content == u"요청하기":
+ 
+    if content == u"요청하기":
         press = selectedPress
         date = selectedDate
         category = selectedCategory
@@ -82,6 +69,7 @@ def message(request):
                 }
             }),press,date,category
     elif content == u"다시선택하기":
+        numSelected = 0;
         return JsonResponse({
             'message':{
                 'text':'다시 골라주세요!'
@@ -89,6 +77,19 @@ def message(request):
             'keyboard': {
                 'type': 'buttons',
                 'buttons' : menulist
+                }
+            })
+    elif numSelected == 3:
+        return JsonResponse({
+            'message':{
+                'text': "선택이 완료되었습니다!\n"+
+                "선택된 신문사: "+selectedPress+
+                "\n선택된 날짜: "+selectedDate+
+                "\n선택된 분야: "+selectedCategory 
+                },
+            'keyboard':{
+                'type':'buttons',
+                'buttons': ['요청하기','다시선택하기']
                 }
             })
     elif content == u"신문사 고르기":
@@ -139,7 +140,7 @@ def message(request):
         numSelected = numSelected + 1
         return JsonResponse({
             'message': {
-                'text': whatContent+" 중 "+content+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?\n"+numSelected+": 선택한 가짓수"
+                'text': whatContent+" 중 "+content+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                 },
             'keyboard': {
                 'type': 'buttons',
