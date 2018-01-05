@@ -56,7 +56,7 @@ def message(request):
                     'buttons': ['요청하기','다시선택하기']
                     }
                 })
-    elif  content == u"요청하기":
+    elif content == u"요청하기":
         press = selectedPress
         date = selectedDate
         category = selectedCategory
@@ -118,6 +118,16 @@ def message(request):
                 }
             })
     else :
+        for i in presslist:
+            if i == content:
+                selectedPress = content
+        for i in datelist:
+            if i == content:
+                selectedDate = content
+        for i in categorylist:
+            if i == content:
+                selectedCategory = content
+
         return JsonResponse({
             'message': {
                 'text': content +" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
