@@ -10,13 +10,13 @@ class Requesthandler:
     def setRequest(self,content):
         if content in lists.presslist :
             self.press = content
-            self.length = self.length + 1
+            self.length+=1
         elif content in lists.datelist :
             self.date = content
-            self.length = self.length + 1
+            self.length+=1
         elif content in lists.categorylist :
             self.category = content
-            self.length = self.length + 1
+            self.length+=1
 
     def resetRequest(self):
         self.press = ""
