@@ -22,7 +22,7 @@ def message(request):
     if content == u"신문사 고르기":
         return JsonResponse({
             'message': {
-                'text': "신문사를 골라주세요!"
+                'text': "신문사를 골라주세요!"+RH.length
                 },
             'keyboard': {
                 'type': 'buttons',
@@ -32,7 +32,7 @@ def message(request):
     elif content == u"날짜 고르기":
         return JsonResponse({
             'message': {
-                'text': "날짜를 골라주세요!"
+                'text': "날짜를 골라주세요!"+RH.length
                 },
             'keyboard': {
                 'type': 'buttons',
@@ -42,7 +42,7 @@ def message(request):
     elif content == u"분야 고르기":
         return JsonResponse({
             'message': {
-                'text': "분야를 골라주세요!"
+                'text': "분야를 골라주세요!"+RH.length
                 },
             'keyboard': {
                 'type': 'buttons',
@@ -76,7 +76,7 @@ def message(request):
             '''
             return JsonResponse({
                 'message': {
-                    'text': press+","+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': press+","+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"+RH.length
                     },
                 'keyboard': {
                 'type': 'buttons',
