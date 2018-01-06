@@ -1,24 +1,10 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+#from django.views.decorators.csrf import csrf_exempt
 import json
+from . import lists
 
-menulist = ['신문사 고르기', '날짜 고르기', '분야 고르기']
-
-presslist = ['조선','중앙','동아',
-        '경향','한겨레','한국경제','매일경제']
-
-datelist = ['이틀전','어제','오늘']
-
-categorylist= ['정치','경제','사회',
-        '생활/문화','세계','IT/과학','오피니언']
 #고객의 요청 정보를 담을 객체 선언을 여기다 하자!
 #request_list > answer.py 라는 걸 만들어서 여기다가 객체를 던져주고 요약한 것을 보내도록 하자
-
-selectedPress = None
-selectedDate = None
-selectedCategory = None
-numSelected = 0
-
 def keyboard(request):
     '''
     :param 카톡플친 API를 통해 넘어온 /keyboard request
@@ -28,130 +14,13 @@ def keyboard(request):
  
     return JsonResponse({
                 'type' : 'buttons',
-                'buttons' : menulist
+                'buttons' :list(menulist)
                 })
 
 #content 로 받아진 내용을 저장할 수 있는 방법을 찾아야함
 #세개의 객채를 구성해서 if문으로 구성해서 셋다 not null일 경우에는 선택이 완료되었음을 알리고 해당하는 정보를 전송함
 #구성 된 세개의 정보 또한 json 화 해서 전송하자 예시 {'press':'조선','date':'어제','category':'세계'}
+#numSelected 를 통해 counting 하는게 제대로 작동 하지 않음 외부 변수를 사용하지 않고 데이터가 들어가 있는지 확인하는 방법을 강구해야함.
+#세번째 선택이 끝났는데 바로 넘어가지 않고 어떤 버튼 이든 눌러야 다음으로 넘어가는 사항 수정이 필요함
+#DB하고 연동하여 고객이 고른 정보에 맞춰 DB에서 맞는 정보를 끌어와서 보여주는 기능을 구현해야함
 
-@csrf_exempt
-def message(request):
-    global numSelected
-    global selectedPress
-    global selectedDate
-    global selectedCategory
-
-    '''
-    user_key: reqest.body.user_key, //user_key
-    type: reqest.body.type,            //메시지 타입
-    content: reqest.body.content    //메시지 내용
-    '''
-    message = ((request.body).decode('utf-8'))
-    return_json_str = json.loads(message)
-    content = return_json_str['content']
-    #요청하기가 들어오면 다른 .py 파일에서 불러온 기사 요약 정보를 보여줄 수 있도록 하자.
-    if content == u"요청하기":
-        press = selectedPress
-        date = selectedDate
-        category = selectedCategory
-        selectedDate = None
-        selectedPress = None
-        selectedCategory = None
-        numSelected = 0;
-        return JsonResponse({
-            'message':{
-                'text':"선택한 내용: "+
-                "\n신문사: "+press+
-                "\n날짜: "+date+
-                "\n분야: "+category+
-                "\n요약된 기사 내용"
-                },
-            'keyboard':{
-                'type':'buttons',
-                'buttons':menulist
-                }
-            })
-    elif content == u"다시선택하기":
-        numSelected = 0;
-        return JsonResponse({
-            'message':{
-                'text':'다시 골라주세요!'
-                },
-            'keyboard': {
-                'type': 'buttons',
-                'buttons' : menulist
-                }
-            })
-    elif numSelected == 3:
-        #numSelected = 0; 
-        return JsonResponse({
-            'message':{
-                'text': "선택이 완료되었습니다!\n"+
-                "선택된 신문사: "+selectedPress+
-                "\n선택된 날짜: "+selectedDate+
-                "\n선택된 분야: "+selectedCategory 
-                },
-            'keyboard':{
-                'type':'buttons',
-                'buttons': ['요청하기','다시선택하기']
-                }
-            })
-    elif content == u"신문사 고르기":
-        numSelected = numSelected + 1
-        return JsonResponse({
-            'message': {
-                'text': "신문사를 골라주세요!"
-                },
-            'keyboard': {
-                'type': 'buttons',
-                'buttons' : presslist
-                }
-            })
-    elif content == u"날짜 고르기":
-        numSelected = numSelected + 1
-        return JsonResponse({
-            'message': {
-                'text': "날짜를 골라주세요!"
-                },
-            'keyboard': {
-                'type': 'buttons',
-                'buttons' : datelist
-                }
-            })
-    elif content == u"분야 고르기":
-        numSelected = numSelected + 1
-        return JsonResponse({
-            'message': {
-                'text': "분야를 골라주세요!"
-                },
-            'keyboard': {
-                'type': 'buttons',
-                'buttons' : categorylist
-                }
-            })
-    else :
-        whatContent = None
-        
-        for i in presslist:
-            if i == content:
-                selectedPress = content
-                whatContent = "신문사"
-        for i in datelist:
-            if i == content:
-                selectedDate = content
-                whatContent = "날짜"
-        for i in categorylist:
-            if i == content:
-                selectedCategory = content
-                whatContent = "분야"
-        #numSelected = numSelected + 1
-        return JsonResponse({
-            'message': {
-                'text': whatContent+" 중 "+content+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
-                },
-            'keyboard': {
-                'type': 'buttons',
-                'buttons' : menulist
-                }
-            })

@@ -1,11 +1,11 @@
 from django.conf.urls import url
 from django.contrib import admin
-from . import views
+from . import views, answer
 
 urlpatterns = [
         
         url(r'^keyboard/',views.keyboard),
-        url(r'^message',views.message),
+        url(r'^message',answer.message),
         url(r'^admin/',admin.site.urls)
         ]
 
