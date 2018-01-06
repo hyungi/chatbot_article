@@ -4,7 +4,7 @@ import json
 from . import lists
 from . import returns
 #lists 의 모든 리스트는 set자료형임
-RH
+
 @csrf_exempt
 def message(request):
 
