@@ -66,7 +66,7 @@ def message(request):
         else :
             RH.setRequest(content)
             press,date,category = RH.getRequest()
-            global result = ""
+            result = ""
             if len(press) != 0 :
                 result += '['+press+']'
             elif len(date) != 0 :
