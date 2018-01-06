@@ -65,8 +65,8 @@ def message(request):
             #사용자의 요구사항이 담긴 selectList를 전달함
         else :
             RH.setRequest(content)
-            press,date,category,length = RH.getRequest()
-            result = ""
+            press,date,category = RH.getRequest()
+            global result = ""
             if len(press) != 0 :
                 result += '['+press+']'
             elif len(date) != 0 :
@@ -76,8 +76,7 @@ def message(request):
             
             return JsonResponse({
                 'message': {
-                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요? total: "+length 
-                    #, 길이: "+ length
+                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
