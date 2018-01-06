@@ -7,30 +7,30 @@ class Requesthandler:
         self.category=category
         self.length = length
 
-    def setRequest(content):
-        if content in presslist :
+    def setRequest(self,content):
+        if content in lists.presslist :
             self.press = content
             length = length + 1
-        elif content in datelist :
+        elif content in lists.datelist :
             self.date = content
             length = length + 1
-        elif content in categorylist :
+        elif content in lists.categorylist :
             self.category = content
             length = length + 1
 
-    def resetRequest():
+    def resetRequest(self):
         self.press = ""
         self.date = ""
         self.category = ""
         self.length = 0
 
-    def getRequest():
+    def getRequest(self):
         return self.press,self.date,self.category
-    def isFull():
-        if length == 3:
-            return true
+    def isFull(self):
+        if self.length == 3:
+            return True
         else :
-            return false
-    def getLength():
+            return False
+    def getLength(self):
         return self.length
 

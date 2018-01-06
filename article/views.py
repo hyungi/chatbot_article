@@ -14,7 +14,7 @@ def keyboard(request):
  
     return JsonResponse({
                 'type' : 'buttons',
-                'buttons' :list(menulist)
+                'buttons' :list(lists.menulist)
                 })
 
 #content 로 받아진 내용을 저장할 수 있는 방법을 찾아야함

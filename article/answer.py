@@ -8,7 +8,7 @@ from . import returns
 @csrf_exempt
 def message(request):
 
-    RH = Requesthandler("","","",0)
+    RH = returns.Requesthandler("","","",0)
     '''
     user_key: reqest.body.user_key, //user_key
     type: reqest.body.type,            //메시지 타입
@@ -26,7 +26,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(presslist)
+                'buttons' : list(lists.presslist)
                 }
             })
     elif content == u"날짜 고르기":
@@ -36,7 +36,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(datelist)
+                'buttons' : list(lists.datelist)
                 }
             })
     elif content == u"분야 고르기":
@@ -46,7 +46,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(categorylist)
+                'buttons' : list(lists.categorylist)
                 }
             })
     else :
@@ -59,26 +59,27 @@ def message(request):
                     },
                 'keyboard':{
                     'type': 'buttons',
-                    'buttons': list(menulist)
+                    'buttons': list(lists.menulist)
                     }
                 })
             #사용자의 요구사항이 담긴 selectList를 전달함
         else :
             RH.setRequest(content)
             press,date,category = RH.getRequest()
+            '''
             if len(press) != 0 :
                 result = '['+press+']'
             elif len(date) != 0 :
                 result = result + '['+date+']'
             else :
                 result = result + '['+category+']'
-
+            '''
             return JsonResponse({
                 'message': {
-                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': press+","+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(menulist)
+                'buttons' : list(lists.menulist)
                     }
                 })
