@@ -25,7 +25,7 @@ class Requesthandler:
         self.length = 0
 
     def getRequest(self):
-        return self.press,self.date,self.category,self.length
+        return self.press,self.date,self.category
     def isFull(self):
         if self.length == 3:
             return True
