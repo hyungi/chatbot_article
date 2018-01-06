@@ -4,11 +4,11 @@ import json
 from . import lists
 from . import returns
 #lists 의 모든 리스트는 set자료형임
-
+RH
 @csrf_exempt
 def message(request):
 
-    RH = returns.Requesthandler("","","",0)
+    global RH = returns.Requesthandler("","","",0)
     '''
     user_key: reqest.body.user_key, //user_key
     type: reqest.body.type,            //메시지 타입
