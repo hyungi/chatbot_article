@@ -66,6 +66,7 @@ def message(request):
         else :
             RH.setRequest(content)
             press,date,category = RH.getRequest()
+            length = RH.getLength()
             '''
             if len(press) != 0 :
                 result = '['+press+']'
@@ -76,7 +77,7 @@ def message(request):
             '''
             return JsonResponse({
                 'message': {
-                    'text': press+","+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': press+","+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?, 길이: "+ length
                     },
                 'keyboard': {
                 'type': 'buttons',
