@@ -8,7 +8,7 @@ from . import returns
 @csrf_exempt
 def message(request):
 
-    RH = returns.Requesthandler("","","",0)
+    RH = returns.Requesthandler("","","")
     '''
     user_key: reqest.body.user_key, //user_key
     type: reqest.body.type,            //메시지 타입
@@ -50,8 +50,10 @@ def message(request):
                 }
             })
     else :
+        RH.setRequest(content)
+        press,date,category = RH.getRequest()
+
         if RH.isFull():
-            press,date,category = RH.getRequest()
             RH.resetRequest()
             return JsonResponse({
                 'message':{
@@ -64,8 +66,6 @@ def message(request):
                 })
             #사용자의 요구사항이 담긴 selectList를 전달함
         else :
-            RH.setRequest(content)
-            press,date,category = RH.getRequest()
             result = ""
             if len(press) != 0 :
                 result += '['+press+']'
