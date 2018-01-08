@@ -66,9 +66,10 @@ def message(request):
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
-            press = ""
-            date = ""
-            category = ""
+            del press[user_key]
+            del date[user_key]
+            del category[user_key]
+            
             return JsonResponse({
                 'message':{
                     'text':result+'선택이 모두 완료되었습니다.'
@@ -79,9 +80,15 @@ def message(request):
                     }
                 })
         else:
+            result = press.get(user_key)
+            if date.get(user_key) is not None:
+                result += date.get(user_key)
+            elif category.get(user_key) is not None:
+                result += category.get(user_key)
+                
             return JsonResponse({
                 'message': {
-                    'text': press.get(user_key)+", "+date.get(user_key)+", "+category.get(user_key)+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
@@ -93,10 +100,9 @@ def message(request):
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
-            press = ""
-            date = ""
-            category = ""
-            
+            del press[user_key]
+            del date[user_key]
+            del category[user_key]
             return JsonResponse({
                 'message':{
                     'text':result+'선택이 모두 완료되었습니다.'
@@ -107,9 +113,16 @@ def message(request):
                     }
                 })       
         else:
+            result = ""
+            if press.get(user_key) is not None:
+                result += press.get(user_key)
+            elif date.get(user_key) is not None:
+                result += date.get(user_key)
+            elif category.get(user_key) is not None:
+                result += category.get(user_key)
             return JsonResponse({
             'message': {
-                'text': press.get(user_key)+", "+date.get(user_key)+", "+category.get(user_key)+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                 },
             'keyboard': {
             'type': 'buttons',
@@ -121,9 +134,11 @@ def message(request):
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
-            press.clear()
-            date.clear()
-            category.clear()
+            
+            del press[user_key]
+            del date[user_key]
+            del category[user_key]
+            
             return JsonResponse({
                 'message':{
                     'text':result+'선택이 모두 완료되었습니다.'
@@ -135,9 +150,17 @@ def message(request):
                 })
         
         else:
+            result = ""
+            if press.get(user_key) is not None:
+                result += press.get(user_key)
+            elif date.get(user_key) is not None:
+                result += date.get(user_key)
+            elif category.get(user_key) is not None:
+                result += category.get(user_key)
+            
             return JsonResponse({
                 'message': {
-                    'text': press.get(user_key)+", "+date.get(user_key)+", "+category.get(user_key)+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
