@@ -5,7 +5,7 @@ from article.lists import *
 from article.returns import *
 #lists 의 모든 리스트는 set자료형임
 
-RH
+RH = ""
 
 @csrf_exempt
 def message(request):
