@@ -6,9 +6,9 @@ from article.returns import *
 
 #lists 의 모든 리스트는 set자료형임
 
-press=""
-date=""
-category=""
+press={}
+date={}
+category={}
 
 
 @csrf_exempt
@@ -65,10 +65,10 @@ def message(request):
                 }
             })
     elif isPress:
-        press = content
+        press[user_key] = content
         if is_Full():
             result = ""
-            result = press +", "+date+", "+category
+            result = press[user_key] +", "+date[user_key]+", "+category[user_key]
             press = ""
             date = ""
             category = ""
@@ -84,7 +84,7 @@ def message(request):
         else:
             return JsonResponse({
                 'message': {
-                    'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': press.get(user_key)+", "+date.get(user_key)+", "+category.get(user_key)+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
@@ -92,10 +92,10 @@ def message(request):
                     }
                 })
     elif isDate:
-        date = content
+        date[user_key] = content
         if is_Full():
             result = ""
-            result = press +", "+date+", "+category
+            result = press[user_key] +", "+date[user_key]+", "+category[user_key]
             press = ""
             date = ""
             category = ""
@@ -112,7 +112,7 @@ def message(request):
         else:
             return JsonResponse({
             'message': {
-                'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                'text': press.get(user_key)+", "+date.get(user_key)+", "+category.get(user_key)+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                 },
             'keyboard': {
             'type': 'buttons',
@@ -120,13 +120,13 @@ def message(request):
                 }
             })   
     elif isCategory:
-        category = content
-        if is_Full():
+        category = {user_key,content}
+        if is_Full(user_key):
             result = ""
-            result = press +", "+date+", "+category
-            press = ""
-            date = ""
-            category = ""
+            result = press[user_key] +", "+date[user_key]+", "+category[user_key]
+            press.clear()
+            date.clear()
+            category.clear()
             return JsonResponse({
                 'message':{
                     'text':result+'선택이 모두 완료되었습니다.'
@@ -140,7 +140,7 @@ def message(request):
         else:
             return JsonResponse({
                 'message': {
-                    'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': press.get(user_key)+", "+date.get(user_key)+", "+category.get(user_key)+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
@@ -174,16 +174,16 @@ def check_is_in_categorylist(content):
     else:
         return False
 #전부다 선택했는지 확인
-def is_Full():
+def is_Full(user_key):
     global press
     global date
     global category
     
-    if press=="":
+    if press.get(user_key) is None:
         return False
-    elif date=="":
+    elif date.get(user_key) is None:
         return False
-    elif category=="":
+    elif category.get(user_key) is None:
         return False
     else:
         return True
