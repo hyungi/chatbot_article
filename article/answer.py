@@ -5,10 +5,12 @@ from article.lists import *
 from article.returns import *
 #lists 의 모든 리스트는 set자료형임
 
-RH = requestHandler()
+RH
+
 @csrf_exempt
 def message(request):
-    global RH
+    global RH 
+    RH = requestHandler()
 
     '''
     user_key: reqest.body.user_key, //user_key
