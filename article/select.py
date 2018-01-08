@@ -17,19 +17,19 @@ class select:
     def getRequest(self):
         return self.press,self.date,self.category
 #신문사 이름중 하나인지 확인
-    def check_is_in_presslist(content):
+    def check_is_in_presslist(self,content):
         if content in presslist:
             return True
         else:
             return False
 #날짜 목록중 하나인지 체크 -- 임시방편이라 수정해야함
-    def check_is_in_datelist(content):
+    def check_is_in_datelist(self,content):
         if content in datelist:
             return True
         else:
             return False
 #카테고리 중 하나인지 체크
-    def check_is_in_categorylist(content):
+    def check_is_in_categorylist(self,content):
         if content in categorylist:
             return True
         else:
