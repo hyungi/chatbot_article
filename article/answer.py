@@ -1,14 +1,14 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from . import lists
-from . import returns
+from article.lists import *
+from article.returns import *
 #lists 의 모든 리스트는 set자료형임
 
+RH = requestHandler()
 @csrf_exempt
 def message(request):
 
-    RH = returns.Requesthandler("","","")
     '''
     user_key: reqest.body.user_key, //user_key
     type: reqest.body.type,            //메시지 타입
@@ -26,7 +26,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(lists.presslist)
+                'buttons' : list(presslist)
                 }
             })
     elif content == u"날짜 고르기":
@@ -36,7 +36,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(lists.datelist)
+                'buttons' : list(datelist)
                 }
             })
     elif content == u"분야 고르기":
@@ -46,33 +46,31 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(lists.categorylist)
+                'buttons' : list(categorylist)
                 }
             })
     else :
         RH.setRequest(content)
-        press,date,category = RH.getRequest()
-
         if RH.isFull():
             RH.resetRequest()
             return JsonResponse({
                 'message':{
-                    'text':press+', '+date+', '+category+" 요청을 전송하였습니다."
+                    'text':"요청을 전송하였습니다."
                     },
                 'keyboard':{
                     'type': 'buttons',
-                    'buttons': list(lists.menulist)
+                    'buttons': list(menulist)
                     }
                 })
-            #사용자의 요구사항이 담긴 selectList를 전달함
         else :
-            result = ""
-            if len(press) != 0 :
-                result += '['+press+']'
-            elif len(date) != 0 :
-                result += '['+date+']'
-            else :
-                result += '['+category+']'
+            press,date,category = RH.getRequest()
+            result = None
+            if press is not None:
+                result += "["+press+"]" 
+            elif date is not None:
+                result += "["+date+"]"
+            if category is not None:
+                result += "["+category+"]"
             
             return JsonResponse({
                 'message': {
@@ -80,6 +78,6 @@ def message(request):
                     },
                 'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(lists.menulist)
+                'buttons' : list(menulist)
                     }
                 })

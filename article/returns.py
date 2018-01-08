@@ -1,33 +1,47 @@
-from . import lists
+from article.models import *
+from article.lists import *
 
-class Requesthandler:
-    def __init__(self,press,date,category):
-        self.press=press
-        self.date=date
-        self.category=category
+class requestHandler:
+    def __init__(self):
+        self.press = None
+        self.date = None
+        self.category = None
 
     def setRequest(self,content):
-        if content in lists.presslist :
+        if content in presslist:
             self.press = content
-        elif content in lists.datelist :
+        elif content in datelist:
             self.date = content
-        elif content in lists.categorylist :
+        elif content in categorylist:
             self.category = content
-
+        
     def resetRequest(self):
-        self.press = ""
-        self.date = ""
-        self.category = ""
+        self.press = None
+        self.date = None
+        self.category = None
 
     def getRequest(self):
         return self.press,self.date,self.category
-    
+
     def isFull(self):
-        if len(self.press) == 0:
+        if self.press is None:
             return False
-        elif len(self.date) == 0:
+        elif self.category is None:
             return False
-        elif len(self.category) == 0:
+        elif self.date is None:
             return False
-        else :
+        else:
             return True
+
+'''
+class requestPusher:
+    def pushRequest(user_key,content):
+        rq = Requirement.objects.get(user_id = user_key)
+        if content in presslist:
+            rq.press = content
+        elif content in categorylist:
+            rq.category = content
+        elif content in datelist:
+            rq.date = content
+        rq.save()
+'''

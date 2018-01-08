@@ -1,5 +1,5 @@
-from django.http import JsonResponse
-#from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponseNotFound
+from django.views.decorators.csrf import csrf_exempt
 import json
 from . import lists
 
@@ -17,4 +17,22 @@ def keyboard(request):
                 'buttons' :list(lists.menulist)
                 })
 
+@csrf_exempt
+def add_friend(request) :
+    if request.method == "POST":
+        message = ((request.body).decode('utf-8'))
+        return_json_str = json.loads(message)
+        user_key = return_json_str['user_key']
+        #튜플 생성
+        return JsonResponse({"result":"done"})
+    else:
+        return HttpResponseNotFound
+
+@csrf_exempt
+def del_friend(request, user_key):
+    if request.method == "DELETE":
+        #만들어둔 튜플 삭제    
+        return JsonResponse({"result":"done"})
+    else:
+        return HttpResponseNotFound
 

@@ -6,7 +6,10 @@ urlpatterns = [
         
         url(r'^keyboard/',views.keyboard),
         url(r'^message',answer.message),
-        url(r'^admin/',admin.site.urls)
+        url(r'^admin/',admin.site.urls),
+        url(r'^friend$', views.add_friend),
+        url(r'^friend/(?P<user_key>\w+)$', views.del_friend)
+
         ]
 
 '''
