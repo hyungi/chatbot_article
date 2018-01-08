@@ -3,6 +3,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from article.lists import *
 from article.returns import *
+import jpype
+
 #lists 의 모든 리스트는 set자료형임
 
 press=""
@@ -14,6 +16,7 @@ def message(request):
     global press
     global date
     global category
+    jpype.attachThreadToJVM()
 
     '''
     user_key: reqest.body.user_key, //user_key
