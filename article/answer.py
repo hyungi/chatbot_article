@@ -39,7 +39,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(presslist)
+                'buttons' : presslist
                 }
             })
     elif content == u"날짜 고르기":
@@ -49,7 +49,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(datelist)
+                'buttons' : datelist
                 }
             })
     elif content == u"분야 고르기":
@@ -59,7 +59,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(categorylist)
+                'buttons' : categorylist
                 }
             })
     elif isPress:
@@ -76,7 +76,7 @@ def message(request):
                     },
                 'keyboard':{
                     'type':'buttons',
-                    'buttons':list(menulist)
+                    'buttons':menulist
                     }
                 })
         else:
@@ -86,7 +86,7 @@ def message(request):
                     },
                 'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(menulist)
+                'buttons' : menulist
                     }
                 })
     elif isDate:
@@ -104,7 +104,7 @@ def message(request):
                     },
                 'keyboard':{
                     'type':'buttons',
-                    'buttons':list(menulist)
+                    'buttons':menulist
                     }
                 })       
         else:
@@ -114,7 +114,7 @@ def message(request):
                 },
             'keyboard': {
             'type': 'buttons',
-            'buttons' : list(menulist)
+            'buttons' : menulist
                 }
             })   
     elif isCategory:
@@ -131,7 +131,7 @@ def message(request):
                     },
                 'keyboard':{
                     'type':'buttons',
-                    'buttons':list(menulist)
+                    'buttons':menulist
                     }
                 })
         
@@ -142,7 +142,7 @@ def message(request):
                     },
                 'keyboard': {
                 'type': 'buttons',
-                'buttons' : list(menulist)
+                'buttons' : menulist
                     }
                 }) 
     else :
@@ -150,7 +150,7 @@ def message(request):
             'message': {'text':'죄송합니다 정의되지 않은 응답입니다.'},
             'keyboard' : {
                 'type':'buttons',
-                'buttons' : list(menulist)
+                'buttons' : menulist
                 }
             })
 #신문사 이름중 하나인지 확인
