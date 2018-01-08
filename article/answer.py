@@ -57,12 +57,12 @@ def message(request):
             })
     else :
         if press is not None and date is not None and category is not None:
-            rh = requestHandler()
-            rh.setRequest(press,date,category)
+           # rh = requestHandler()
+           # rh.setRequest(press,date,category)
             
             #명령을 전송하는 코드
             
-            rh.resetRequest()
+           # rh.resetRequest()
             return JsonResponse({
                 'message':{
                     'text':"요청을 전송하였습니다."
