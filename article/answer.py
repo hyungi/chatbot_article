@@ -8,6 +8,7 @@ from article.returns import *
 RH = requestHandler()
 @csrf_exempt
 def message(request):
+    global RH
 
     '''
     user_key: reqest.body.user_key, //user_key
