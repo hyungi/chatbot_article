@@ -55,46 +55,36 @@ def message(request):
                 'buttons' : list(categorylist)
                 }
             })
-    else :
-        if content in presslist:
-            press = content
-        elif content in datelist:
-            date = content
-        else:
-            category = content
-
-
-        if press is not None and date is not None and category is not None:
-           # rh = requestHandler()
-           # rh.setRequest(press,date,category)
-            
-            #명령을 전송하는 코드
-            
-           # rh.resetRequest()
-            return JsonResponse({
-                'message':{
-                    'text':press+", "+date+", "+category+","+"요청을 전송하였습니다."
-                    },
-                'keyboard':{
-                    'type': 'buttons',
-                    'buttons': list(menulist)
-                    }
-                })
-        else :
-            result = None
-            if press is not None:
-                result += "["+press+"]" 
-            elif date is not None:
-                result += "["+date+"]"
-            if category is not None:
-                result += "["+category+"]"
-            
-            return JsonResponse({
-                'message': {
-                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
-                    },
-                'keyboard': {
-                'type': 'buttons',
-                'buttons' : list(menulist)
-                    }
-                })
+    elif content in presslist:
+        press = content
+        return JsonResponse({
+            'message': {
+                'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                },
+            'keyboard': {
+            'type': 'buttons',
+            'buttons' : list(menulist)
+                }
+            })
+    elif content in datelist:
+        date = content
+        return JsonResponse({
+            'message': {
+                'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                },
+            'keyboard': {
+            'type': 'buttons',
+            'buttons' : list(menulist)
+                }
+            })   
+    else:
+        category = content
+        return JsonResponse({
+            'message': {
+                'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                },
+            'keyboard': {
+            'type': 'buttons',
+            'buttons' : list(menulist)
+                }
+            })     
