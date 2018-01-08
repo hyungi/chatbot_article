@@ -56,6 +56,14 @@ def message(request):
                 }
             })
     else :
+        if content in presslist:
+            press = content
+        elif content in datelist:
+            date = content
+        else:
+            category = content
+
+
         if press is not None and date is not None and category is not None:
            # rh = requestHandler()
            # rh.setRequest(press,date,category)
@@ -65,7 +73,7 @@ def message(request):
            # rh.resetRequest()
             return JsonResponse({
                 'message':{
-                    'text':"요청을 전송하였습니다."
+                    'text':press+", "+date+", "+category+","+"요청을 전송하였습니다."
                     },
                 'keyboard':{
                     'type': 'buttons',
