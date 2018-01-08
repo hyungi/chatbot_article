@@ -2,9 +2,6 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from article.lists import *
-from article.returns import *
-
-#lists 의 모든 리스트는 set자료형임
 
 press={}
 date={}
@@ -66,7 +63,7 @@ def message(request):
             })
     elif isPress:
         press[user_key] = content
-        if is_Full():
+        if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
             press = ""
@@ -93,7 +90,7 @@ def message(request):
                 })
     elif isDate:
         date[user_key] = content
-        if is_Full():
+        if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
             press = ""
@@ -120,7 +117,7 @@ def message(request):
                 }
             })   
     elif isCategory:
-        category = {user_key,content}
+        category[user_key] = content
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
