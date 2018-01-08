@@ -5,12 +5,15 @@ from article.lists import *
 from article.returns import *
 #lists 의 모든 리스트는 set자료형임
 
-RH = ""
+press=None
+date=None
+category=None
 
 @csrf_exempt
 def message(request):
-    global RH 
-    RH = requestHandler()
+    global press
+    global date
+    global category
 
     '''
     user_key: reqest.body.user_key, //user_key
@@ -53,9 +56,13 @@ def message(request):
                 }
             })
     else :
-        RH.setRequest(content)
-        if RH.isFull():
-            RH.resetRequest()
+        if press is not None and date is not None and category is not None:
+            rh = requestHandler()
+            rh.setRequest(press,date,category)
+            
+            #명령을 전송하는 코드
+            
+            rh.resetRequest()
             return JsonResponse({
                 'message':{
                     'text':"요청을 전송하였습니다."
@@ -66,7 +73,6 @@ def message(request):
                     }
                 })
         else :
-            press,date,category = RH.getRequest()
             result = None
             if press is not None:
                 result += "["+press+"]" 

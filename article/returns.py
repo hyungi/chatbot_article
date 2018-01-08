@@ -7,7 +7,7 @@ class requestHandler:
         self.date = None
         self.category = None
 
-    def setRequest(self,content):
+    def setRequest(self,press,date,category):
         if content in presslist:
             self.press = content
         elif content in datelist:
