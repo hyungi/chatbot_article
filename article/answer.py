@@ -83,7 +83,7 @@ def message(request):
             result = press.get(user_key)
             if date.get(user_key) is not None:
                 result += date.get(user_key)
-            elif category.get(user_key) is not None:
+            if category.get(user_key) is not None:
                 result += category.get(user_key)
                 
             return JsonResponse({
@@ -116,9 +116,9 @@ def message(request):
             result = ""
             if press.get(user_key) is not None:
                 result += press.get(user_key)
-            elif date.get(user_key) is not None:
+            if date.get(user_key) is not None:
                 result += date.get(user_key)
-            elif category.get(user_key) is not None:
+            if category.get(user_key) is not None:
                 result += category.get(user_key)
             return JsonResponse({
             'message': {
@@ -153,9 +153,9 @@ def message(request):
             result = ""
             if press.get(user_key) is not None:
                 result += press.get(user_key)
-            elif date.get(user_key) is not None:
+            if date.get(user_key) is not None:
                 result += date.get(user_key)
-            elif category.get(user_key) is not None:
+            if category.get(user_key) is not None:
                 result += category.get(user_key)
             
             return JsonResponse({
