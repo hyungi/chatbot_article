@@ -32,23 +32,7 @@ def message(request):
     
     #요청하기가 들어오면 다른 .py 파일에서 불러온 기사 요약 정보를 보여줄 수 있도록 하자. 
     
-    if is_Full():
-        result = ""
-        result = press +", "+date+", "+category
-        press = ""
-        date = ""
-        catgory = ""
-        return JsonResponse({
-            'message':{
-                'text':'선택이 모두 완료되었습니다.'
-                },
-            'keyboard':{
-                'type':'buttons',
-                'buttons':list(menulist)
-                }
-            })
-
-    elif content == u"신문사 고르기":
+    if content == u"신문사 고르기":
         return JsonResponse({
             'message': {
                 'text': "신문사를 골라주세요!"
@@ -80,18 +64,51 @@ def message(request):
             })
     elif isPress:
         press = content
-        return JsonResponse({
-            'message': {
-                'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
-                },
-            'keyboard': {
-            'type': 'buttons',
-            'buttons' : list(menulist)
-                }
-            })
+        if is_Full():
+            result = ""
+            result = press +", "+date+", "+category
+            press = ""
+            date = ""
+            category = ""
+            return JsonResponse({
+                'message':{
+                    'text':result+'선택이 모두 완료되었습니다.'
+                    },
+                'keyboard':{
+                    'type':'buttons',
+                    'buttons':list(menulist)
+                    }
+                })
+        else:
+            return JsonResponse({
+                'message': {
+                    'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    },
+                'keyboard': {
+                'type': 'buttons',
+                'buttons' : list(menulist)
+                    }
+                })
     elif isDate:
         date = content
-        return JsonResponse({
+        if is_Full():
+            result = ""
+            result = press +", "+date+", "+category
+            press = ""
+            date = ""
+            category = ""
+            
+            return JsonResponse({
+                'message':{
+                    'text':result+'선택이 모두 완료되었습니다.'
+                    },
+                'keyboard':{
+                    'type':'buttons',
+                    'buttons':list(menulist)
+                    }
+                })       
+        else:
+            return JsonResponse({
             'message': {
                 'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                 },
@@ -102,15 +119,32 @@ def message(request):
             })   
     elif isCategory:
         category = content
-        return JsonResponse({
-            'message': {
-                'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
-                },
-            'keyboard': {
-            'type': 'buttons',
-            'buttons' : list(menulist)
-                }
-            }) 
+        if is_Full():
+            result = ""
+            result = press +", "+date+", "+category
+            press = ""
+            date = ""
+            category = ""
+            return JsonResponse({
+                'message':{
+                    'text':result+'선택이 모두 완료되었습니다.'
+                    },
+                'keyboard':{
+                    'type':'buttons',
+                    'buttons':list(menulist)
+                    }
+                })
+        
+        else:
+            return JsonResponse({
+                'message': {
+                    'text': press+", "+date+", "+category+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    },
+                'keyboard': {
+                'type': 'buttons',
+                'buttons' : list(menulist)
+                    }
+                }) 
     else :
         return JsonResponse({
             'message': {'text':'죄송합니다 정의되지 않은 응답입니다.'},
