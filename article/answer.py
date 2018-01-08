@@ -143,11 +143,11 @@ def is_Full():
     global date
     global category
     
-    if press is None:
+    if press=="":
         return False
-    elif date is None:
+    elif date=="":
         return False
-    elif category is None:
+    elif category=="":
         return False
     else:
         return True
