@@ -63,6 +63,8 @@ def message(request):
             })
     elif isPress:
         press[user_key] = content
+        print("here is isPres"+ press[user_key])
+        
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
@@ -82,21 +84,25 @@ def message(request):
         else:
             result = press.get(user_key)
             if date.get(user_key) is not None:
+                result += "/"
                 result += date.get(user_key)
             if category.get(user_key) is not None:
+                result += "/"
                 result += category.get(user_key)
                 
             return JsonResponse({
                 'message': {
-                    'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                    'text': result+" 선택이 완료 되었습니다! 날짜를 택해 보시겠어요?"
                     },
                 'keyboard': {
                 'type': 'buttons',
-                'buttons' : menulist
+                'buttons' : datelist
                     }
                 })
     elif isDate:
         date[user_key] = content
+        print("here is isDate"+ date[user_key])
+        
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
@@ -117,24 +123,30 @@ def message(request):
             if press.get(user_key) is not None:
                 result += press.get(user_key)
             if date.get(user_key) is not None:
+                result += "/"
                 result += date.get(user_key)
             if category.get(user_key) is not None:
+                result += "/"
                 result += category.get(user_key)
             return JsonResponse({
             'message': {
-                'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
+                'text': result+" 선택이 완료 되었습니다! 분야를 선택해 보시겠어요?"
                 },
             'keyboard': {
             'type': 'buttons',
-            'buttons' : menulist
+            'buttons' : categorylist
                 }
             })   
     elif isCategory:
         category[user_key] = content
+        print("here is isCategory"+ category[user_key])
+        
         if is_Full(user_key):
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
             
+            #고객의 요청에 맞는 내용을 불러오는 코드를 작성해야함
+
             del press[user_key]
             del date[user_key]
             del category[user_key]

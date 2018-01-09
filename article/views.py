@@ -14,7 +14,7 @@ def keyboard(request):
  
     return JsonResponse({
                 'type' : 'buttons',
-                'buttons' : lists.menulist
+                'buttons' : lists.presslist
                 })
 
 @csrf_exempt
