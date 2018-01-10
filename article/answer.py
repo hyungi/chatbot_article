@@ -2,7 +2,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from article.lists import *
+from article.getNews import *
+from article.models import *
+'''
+/article/answer.py
 
+'''
 press={}
 date={}
 category={}
@@ -15,9 +20,11 @@ def message(request):
     global category
 
     '''
+    :param 고객이 버튼을 눌렀을 경우 작동하는 함수로아래와 같은 정보가 전달된다.
     user_key: reqest.body.user_key, //user_key
     type: reqest.body.type,            //메시지 타입
     content: reqest.body.content    //메시지 내용
+    :return JsonResponse를 통해 message 와 keyboard(optional)가 반환된다.
     '''
     message = ((request.body).decode('utf-8'))
     return_json_str = json.loads(message)
@@ -66,15 +73,21 @@ def message(request):
         print("here is isPres"+ press[user_key])
         
         if is_Full(user_key):
+            print("press and Full")
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
+
+            rq = Requirement(user_key=user_key,press=press[user_key],date=date[user_key],category=category[user_key])
+            rq.save()
+            news_list = getNews(press[user_key],date[user_key],category[user_key])
+
             del press[user_key]
             del date[user_key]
             del category[user_key]
             
             return JsonResponse({
                 'message':{
-                    'text':result+'선택이 모두 완료되었습니다.'
+                    'text':result+'선택이 모두 완료되었습니다.'+news_list
                     },
                 'keyboard':{
                     'type':'buttons',
@@ -104,11 +117,18 @@ def message(request):
         print("here is isDate"+ date[user_key])
         
         if is_Full(user_key):
+            print("date and Full")
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
+            rq = Requirement(user_key=user_key,press=press[user_key],date=date[user_key],category=category[user_key])
+            rq.save()
+            news_list = getNews(press[user_key],date[user_key],category[user_key])
+
             del press[user_key]
             del date[user_key]
             del category[user_key]
+            
+            #news_list = getNews(press[user_key],date[user_key],category[user_key])
             return JsonResponse({
                 'message':{
                     'text':result+'선택이 모두 완료되었습니다.'
@@ -137,16 +157,21 @@ def message(request):
             'buttons' : categorylist
                 }
             })   
+    
     elif isCategory:
         category[user_key] = content
         print("here is isCategory"+ category[user_key])
         
         if is_Full(user_key):
+            print("Category and Full")
             result = ""
             result = press[user_key] +", "+date[user_key]+", "+category[user_key]
             
             #고객의 요청에 맞는 내용을 불러오는 코드를 작성해야함
-
+            rq = Requirement(user_key=user_key,press=press[user_key],date=date[user_key],category=category[user_key])
+            rq.save()
+            news_list = getNews(press[user_key],date[user_key],category[user_key])
+            print(news_list)
             del press[user_key]
             del date[user_key]
             del category[user_key]
@@ -180,6 +205,7 @@ def message(request):
                     }
                 }) 
     else :
+        print("정의되지 않은 구문")
         return JsonResponse({
             'message': {'text':'죄송합니다 정의되지 않은 응답입니다.'},
             'keyboard' : {
