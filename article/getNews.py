@@ -22,22 +22,28 @@ def getNews(inputPress,inputDate,inputCategory):
     
     document = Document.objects.filter(press=inputPress)
     document = document.filter(category=inputCategory)
-    getdatetime = timezone.date.now()#.strftime("%Y-%m-%d %H:%M")
+    curDatetime = timezone.now()
 
 
 
-#    if(inputDate == "오늘"):
-#        document = document.filter(published_date.__date=getdatetime.date())
+    '''
     
-#    elif(inputDate == "어제"):
-#        getdatetime - timedelta(days=1)
-#        document = document.filter(published_date.__date=getdatetime.date())
+    '''
+    if(inputDate == "오늘"):
+        print("inputDate is: " + inputDate)
+        document = document.filter(published_date__date=curDatetime)
 
-#    else:
-#        getdatetime - timedelta(days=2)
-#        document = document.filter(published_date.__date=getdatetime.date())
-    
-#    print(getdatetime.strftime("%Y-%m-%d %H:%M"))
+    elif(inputDate == "어제"):
+        print("inputDate is: "+inputDate)
+        curDatetime -= timezone.timedelta(days=1)
+        document = document.filter(published_date__date=curDatetime)
+
+    else:
+        print("inputDate is: " + inputDate)
+        curDatetime -= timezone.timedelta(days=2)
+        document = document.filter(published_date__date=curDatetime)
+
+    print(curDatetime.strftime("%Y-%m-%d %H:%M"))
     
     return_document = document.values('title','text')
     document_list = list(return_document)

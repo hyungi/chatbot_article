@@ -80,7 +80,7 @@ def message(request):
             rq = Requirement(user_key=user_key,press=press[user_key],date=date[user_key],category=category[user_key])
             rq.save()
             news_list = getNews(press[user_key],date[user_key],category[user_key])
-
+            print(news_list)
             del press[user_key]
             del date[user_key]
             del category[user_key]
@@ -128,7 +128,10 @@ def message(request):
             del date[user_key]
             del category[user_key]
             
-            #news_list = getNews(press[user_key],date[user_key],category[user_key])
+            news_list = getNews(press[user_key],date[user_key],category[user_key])
+
+            print(news_list)
+
             return JsonResponse({
                 'message':{
                     'text':result+'선택이 모두 완료되었습니다.'

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from crawl.news_document_class import Sentiment
+#from crawl.news_document_class import Sentiment
 '''
 /article/models.py
 
@@ -24,12 +24,7 @@ class Document(models.Model):
     title = models.TextField()
     text = models.TextField()
     link = models.URLField(default="https://") 
-    sentiment = models.OneToOneField(
-        Sentiment,
-        on_delete=models.DO_NOTHING,
-    )
-
-    #추후 구현
+    
     def __str__(self):
         return self.title
 

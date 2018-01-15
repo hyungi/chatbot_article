@@ -25,7 +25,24 @@ SECRET_KEY = '10_!f6c97t0h)me^36kshfnp2zvl13k-_se8*e^7b5**4&ah25'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+# Hosts/domain names that are valid for this site; required if DEBUG is False
+# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = [
+    '127.0.0.1', 
+    '.pythonanywhere.com',
+    '.elasticbeanstalk.com',
+    '.compute-1.amazonaws.com', # allows viewing of instances directly
+]
+
+import requests
+EC2_PRIVATE_IP  =   None
+try:
+    EC2_PRIVATE_IP  =   requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout = 0.01).text
+except requests.exceptions.RequestException:
+    pass
+
+if EC2_PRIVATE_IP:
+    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 
 # Application definition
 
@@ -111,7 +128,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
