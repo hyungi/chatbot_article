@@ -33,7 +33,7 @@ ALLOWED_HOSTS = [
     '.elasticbeanstalk.com',
     '.compute-1.amazonaws.com', # allows viewing of instances directly
 ]
-
+'''
 import requests
 EC2_PRIVATE_IP  =   None
 try:
@@ -43,7 +43,7 @@ except requests.exceptions.RequestException:
 
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
-
+'''
 # Application definition
 
 INSTALLED_APPS = [
