@@ -3,7 +3,7 @@ from konlpy.tag import Kkma
 from konlpy.tag import Mecab
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
-import news_document_class as nd
+from . import news_document_class as nd
 import numpy as np
 import re
 

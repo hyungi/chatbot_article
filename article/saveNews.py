@@ -1,6 +1,13 @@
-from article.models import *
+from .models import *
 from django.utils import timezone
 import crawl.naver_news_crawler as cr
+
+#python saveNews.py로도 실행을 확인할 수 있도록하는 코드
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE","mysite.settings")
+import django
+django.setup()
+
 '''
 article/saveNews.py
  
@@ -59,7 +66,7 @@ def saveReq(iuser_key,ipres,icategory,idate):
 
 
 chrome_path = "/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"
-# chrome_path = "../crawl/chromedriver"
+#chrome_path = "../crawl/chromedriver"
 
 crawler = cr.crawler("2018-01-06")
 print("before\n", crawler.date_list)

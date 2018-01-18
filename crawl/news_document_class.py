@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from konlpy.tag import Kkma
 from datetime import datetime, date, time
-import text_rank as tr
+from . import text_rank as tr
 '''
 뉴스 기사 정보를 저장할 class인 document와 document에 대한 감정 반응 정보를 담는 class 변수인 sentiment class 선언
 긁은 문장에서 \n을 제거하고, "."을 더한 다시 합치는 메소드인 prettify_sentences(text) 선언
@@ -73,7 +73,7 @@ class Document:
         print("title :", self.title)
         print("text :", self.text)
         print("link :", self.link)
-        print("sentiment_list :\n\t", end="")
+#        print("sentiment_list :\n\t", end="")
         self.sentiment.print_sentiment()
 
 

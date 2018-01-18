@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-#from crawl.news_document_class import Sentiment
 '''
 /article/models.py
 

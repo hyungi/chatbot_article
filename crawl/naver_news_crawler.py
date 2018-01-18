@@ -6,7 +6,7 @@ from selenium import webdriver
 from datetime import datetime, timedelta
 from functools import singledispatch
 from bs4 import BeautifulSoup, element
-import news_document_class as nd
+from . import news_document_class as nd
 import re
 import time
 
@@ -51,9 +51,9 @@ def _(date_to_crawl, category_to_crawl = ["100","101","102","103","104","105"]):
     result = [x for x in itertools.product(date_list, category_to_crawl)]
     return sorted(result, key=lambda k:k[0])
 
-
+#chrome_path = "/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"
 class crawler:
-    def __init__(self, date_to_crawl, path="/Users/hodong/PycharmProjects/news_bot/chromedriver"):
+    def __init__(self, date_to_crawl, path="/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"):
         self.date_to_crawl = date_to_crawl
         self.date_list = get_crawling_list(date_to_crawl)
         self.error_list = []
@@ -167,7 +167,7 @@ class crawler:
         return news
 
 
-    def get_comment_html_from_url(self, url, path="/Users/hodong/PycharmProjects/news_bot/chromedriver") :
+    def get_comment_html_from_url(self, url, path="/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver") :
         '''
         특정 뉴스 기사 url을 받아 그 기사의 댓글 정보를 담고 있는 html 문서를 반환한다.
         :param url: 댓글을 크롤링할 뉴스 기사의 링크 (string)

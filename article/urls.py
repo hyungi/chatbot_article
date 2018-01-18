@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.contrib import admin
-from . import views, answers
+from . import views, answers, saveNews
 #from .select import *
 
 
@@ -12,8 +12,9 @@ urlpatterns = [
         url(r'^message',answers.message),
         url(r'^admin/',admin.site.urls),
         url(r'^friend$', views.add_friend),
-        url(r'^friend/(?P<user_key>\w+)$', views.del_friend)
-
+        url(r'^friend/(?P<user_key>\w+)$', views.del_friend),
+        url(r'^crawl/',saveNews),
+        
         ]
 
 '''
