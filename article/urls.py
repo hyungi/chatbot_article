@@ -13,7 +13,7 @@ urlpatterns = [
         url(r'^admin/',admin.site.urls),
         url(r'^friend$', views.add_friend),
         url(r'^friend/(?P<user_key>\w+)$', views.del_friend),
-        url(r'^crawl/',saveNews),
+#        url(r'^crawl/',saveNews),
         
         ]
 
