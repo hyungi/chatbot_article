@@ -14,7 +14,7 @@ idna==2.6
 jmespath==0.9.3
 konlpy==0.4.4
 nltk==3.2.5
-numpy==1.13.3
+numpy==1.14.0
 pandas==0.22.0
 python-dateutil==2.6.1
 pytz==2017.3
