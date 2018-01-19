@@ -53,7 +53,7 @@ def _(date_to_crawl, category_to_crawl = ["100","101","102","103","104","105"]):
 
 #chrome_path = "/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"
 class crawler:
-    def __init__(self, date_to_crawl, path="/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"):
+    def __init__(self, date_to_crawl, path="/chromedriver"):
         self.date_to_crawl = date_to_crawl
         self.date_list = get_crawling_list(date_to_crawl)
         self.error_list = []
