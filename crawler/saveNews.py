@@ -92,8 +92,6 @@ def saveReq(iuser_key, ipress, icategory, idate):
     requirement.save()
 
 
-# chrome_path = "/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"
-# chrome_path = "../crawl/chromedriver"
 def startcrawling(self):
     crawler = cr.crawler("2018-01-19")
 
