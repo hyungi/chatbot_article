@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup, element
 from . import news_document_class as nd
 import re
 import time
-
+import os
 
 @singledispatch
 def get_crawling_list(date_to_crawl, category_to_crawl = ["100","101","102","103","104","105"]):
@@ -54,7 +54,9 @@ def _(date_to_crawl, category_to_crawl = ["100","101","102","103","104","105"]):
 
 
 class crawler:
-    def __init__(self, date_to_crawl, path="/Users/hodong/PycharmProjects/news_bot/chromedriver"):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    def __init__(self, date_to_crawl, path=os.path.join(BASE_DIR, 'crawler/chromedriver')):
         self.date_to_crawl = date_to_crawl
         self.date_list = get_crawling_list(date_to_crawl)
         self.error_list = []
@@ -175,7 +177,7 @@ class crawler:
         return news
 
 
-    def get_comment_html_from_url(self, url, path="/Users/hodong/PycharmProjects/news_bot/chromedriver") :
+    def get_comment_html_from_url(self, url, path=os.path.join(BASE_DIR, 'crawler/chromedriver')):
         '''
         특정 뉴스 기사 url을 받아 그 기사의 댓글 정보를 담고 있는 html 문서를 반환한다.
         :param url: 댓글을 크롤링할 뉴스 기사의 링크 (string)
