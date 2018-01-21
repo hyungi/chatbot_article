@@ -2,15 +2,15 @@
 import itertools
 import hashlib
 import urllib.request
-
-import os
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from datetime import datetime, timedelta
 from functools import singledispatch
 from bs4 import BeautifulSoup, element
-from . import news_document_class as nd
+import news_document_class as nd
 import re
 import time
+
 
 @singledispatch
 def get_crawling_list(date_to_crawl, category_to_crawl = ["100","101","102","103","104","105"]):
@@ -52,18 +52,14 @@ def _(date_to_crawl, category_to_crawl = ["100","101","102","103","104","105"]):
     result = [x for x in itertools.product(date_list, category_to_crawl)]
     return sorted(result, key=lambda k:k[0])
 
-# chrome_path = "/Users/seonghyeongi/python_projects/chatbot/crawl/chromedriver"
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 class crawler:
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-    def __init__(self, date_to_crawl, path=os.path.join(BASE_DIR, 'crawler/chromedriver')):
+    def __init__(self, date_to_crawl, path="/Users/hodong/PycharmProjects/news_bot/chromedriver"):
         self.date_to_crawl = date_to_crawl
         self.date_list = get_crawling_list(date_to_crawl)
         self.error_list = []
         self.path = path
+
 
     def get_html_by_urllib(self, url):
         '''
@@ -82,24 +78,33 @@ class crawler:
 
         return _html
 
+
     def get_html_by_selenium(self, url, path):
         '''
         url을 받아서 해당 페이지의 html 코드를 반환한다.
         :param url: url 링크 (string)
-        :param path: selenium에서 사용할 드라이버의 저장 위치 
+        :param path: selenium에서 사용할 드라이버의 저장 위치
         :return: html 문서 (string)
         '''
-        browser = webdriver.Chrome(path)
+
+        options = webdriver.ChromeOptions()
+        options.add_argument('headless')
+        options.add_argument('--no-sandbox')
+        browser_temp = webdriver.Chrome(path, chrome_options=options)
+        executor_url = browser_temp.command_executor._url
+        browser = webdriver.Remote(command_executor=executor_url, desired_capabilities=options.to_capabilities())
+
         browser.get(url)
-        time.sleep(0.3)
+        time.sleep(5)
         html = browser.page_source
         browser.quit()
 
         return html
 
+
     def get_links_from_page(self, url):
         '''
-        url을 받아서 해당 페이지에서 크롤링할 뉴스 문서들의 링크들을 리스트 형태로 반환한다. 
+        url을 받아서 해당 페이지에서 크롤링할 뉴스 문서들의 링크들을 리스트 형태로 반환한다.
         :param url: url 링크 (string)
         :return: 뉴스 링크(string)들을 원소로 갖는 리스트 (list)
         '''
@@ -125,6 +130,7 @@ class crawler:
 
         return link_to_crawl
 
+
     def get_hash_from_text(self, text):
         '''
         뉴스 기사 본문을 md5로 해싱하고 10진수 int로 변환한 unique한 id를 반환한다.
@@ -135,6 +141,7 @@ class crawler:
         text = text.encode("utf-8")
         hasher.update(text)
         return str(int(hasher.hexdigest(), 16))
+
 
     def get_document_from_page(self, url) :
         '''
@@ -167,31 +174,43 @@ class crawler:
 
         return news
 
-    def get_comment_html_from_url(self, url, path=os.path.join(BASE_DIR, 'crawler/chromedriver')):
+
+    def get_comment_html_from_url(self, url, path="/Users/hodong/PycharmProjects/news_bot/chromedriver") :
         '''
         특정 뉴스 기사 url을 받아 그 기사의 댓글 정보를 담고 있는 html 문서를 반환한다.
         :param url: 댓글을 크롤링할 뉴스 기사의 링크 (string)
-        :param path: selenium에서 사용할 driver가 저장된 위치, 사용 전 확인 후 변경 필요 (string) 
+        :param path: selenium에서 사용할 driver가 저장된 위치, 사용 전 확인 후 변경 필요 (string)
         :return: 해당 댓글 정보가 담겨있는 html문서 (string)
         '''
-        sleep_time = 0.5
-        browser = webdriver.Chrome(path)
-        browser.get(url)
-        time.sleep(sleep_time)
-        browser.find_element_by_class_name("lo_txt").click()
-        time.sleep(sleep_time)
+        sleep_time = 5
+        options = webdriver.ChromeOptions()
+        options.add_argument('headless')
+        options.add_argument('--no-sandbox')
+        browser_temp = webdriver.Chrome(path, chrome_options=options)
+        executor_url = browser_temp.command_executor._url
+        browser = webdriver.Remote(command_executor=executor_url, desired_capabilities=options.to_capabilities())
 
-        while True:
-            try:
-                browser.find_element_by_class_name("u_cbox_paginate").click()
-                time.sleep(sleep_time)
-            except Exception as e:
-                break
+        browser.get(url)
+        time.sleep(sleep_time+0.5)
+        try:
+            browser.find_element_by_class_name("lo_txt").click()
+            time.sleep(sleep_time)
+        except Exception as e:
+            print(e)
+            return False
+        else:
+            while True:
+                try:
+                    browser.find_element_by_class_name("u_cbox_paginate").click()
+                    time.sleep(sleep_time)
+                except Exception as e:
+                    break
 
         comment_html = browser.page_source
         browser.quit()
 
         return comment_html
+
 
     def get_comments_from_page(self, url) :
         '''
@@ -200,11 +219,12 @@ class crawler:
         :return: nd.comment class 변수를 원소로 갖는 리스트 (list)
         '''
 
+        nd_comment_list = []
         comment_html = self.get_comment_html_from_url(url, self.path)
+        if comment_html==False: return nd_comment_list
         comment_page = BeautifulSoup(comment_html, "html.parser")
         comment_div = comment_page.find_all("div", {"class":"u_cbox_comment_box"})
 
-        nd_comment_list = []
         for comment in comment_div:
             try:
                 user_id = comment.find("span", {"class": "u_cbox_nick"}).text
@@ -215,15 +235,16 @@ class crawler:
 
                 com = nd.Comment(user_id, content, published_date, recomm, unrecomm)
                 nd_comment_list.append(com)
-            except Exception as e:  # 댓글이 사용자에 의해 삭제된 경우 해당 에러가 발생
+            except Exception as e: #댓글이 사용자에 의해 삭제된 경우 해당 에러가 발생
                 continue
 
         return nd_comment_list
 
+
     def crawl_from_datelist_element(self, date_list_element) :
         '''
-        하나의 date_list 원소(크롤링하고자 하는 날짜와 카테고리로 이루어진 tuple)에 해당하는 모든 페이지의 링크를 수집하고 
-        각 링크에서 수집한 뉴스기사, 뉴스 기사를 전처리한 결과물, 그리고 각 뉴스 기사에 대한 댓글 정보를 각각 리스트의 형태로 반환한다.  
+        하나의 date_list 원소(크롤링하고자 하는 날짜와 카테고리로 이루어진 tuple)에 해당하는 모든 페이지의 링크를 수집하고
+        각 링크에서 수집한 뉴스기사, 뉴스 기사를 전처리한 결과물, 그리고 각 뉴스 기사에 대한 댓글 정보를 각각 리스트의 형태로 반환한다.
         :param date_list_element: (datetime, category)의 형태 (tuple)
         :return1: nd.Document class 객체를 원소로 갖는 리스트 (list)
         :return2: nd.Document_summary class 객체를 원소로 갖는 리스트 (list)
@@ -233,40 +254,39 @@ class crawler:
                    "#&date=" + date_list_element[0] + " 00:00:00&page="
 
         target_links = []
-        for page in range(1, 31):
+        for page in range(1,31) :
             len_before_update = len(target_links)
             url = page_url + str(page)
             temp_links = self.get_links_from_page(url)
             target_links = target_links + temp_links
             target_links = list(set(target_links))
             len_after_update = len(target_links)
-            if len_before_update == len_after_update:
-                break
+            if len_before_update==len_after_update : break
 
         nd_document_list = []
         nd_document_summary_list = []
         nd_comment_dict = dict()
 
-        target_links = target_links[0:5]  # 테스트용
-        for target_link in target_links:
+        target_links = target_links[0:5] #테스트용
+        for target_link in target_links :
             doc = self.get_document_from_page(target_link)
             doc_summary = nd.Document_summary(doc)
             comment_list = self.get_comments_from_page(target_link)
 
-            for comment in comment_list:
+            for comment in comment_list :
                 comment.update_document_id(doc.document_id)
 
             nd_comment_dict[doc.document_id] = comment_list
             nd_document_list.append(doc)
             nd_document_summary_list.append(doc_summary)
-            if len(nd_document_list) == 10: break  # 테스트용
+            if len(nd_document_list)==10 : break #테스트용
 
-        print("crawler 동작중\n")
         return nd_document_list, nd_document_summary_list, nd_comment_dict
 
-    def naver_news_crawl(self):
+
+    def naver_news_crawl(self) :
         '''
-        주어진 날짜 기간에 해당하는 모든 네이버 뉴스를 크롤링하여 mini batch로 반환한다. 
+        주어진 날짜 기간에 해당하는 모든 네이버 뉴스를 크롤링하여 mini batch로 반환한다.
         parameter인 date_list에서 1개의 원소를 pop()하여 처리하고 결과값을 반환하며 오류 발생시 error_list에 삽입하여 반환한다.
         DB에 저장하는 장고 코드와 while문을 이용해 mini batch를 구현한다.
         :param date_list: crawling_list #[[ct1, dt1], [ct2, dt1], ... , [ct2, dt2] : the list of [category, datetime] to crawl
@@ -276,18 +296,10 @@ class crawler:
         :return4: error_list (크롤링에 실패하면 date_list 원소로 이루어진 리스트) (list)
         '''
         date_list_element = (self.date_list).pop()
-        try:
+        try :
             nd_list, nd_summary_list, comment_dict = self.crawl_from_datelist_element(date_list_element)
-        except Exception as e:
+        except Exception as e :
             (self.error_list).insert(0, date_list_element)
             print(e)
-        else:
-            print("반환성공\n")
+        else :
             return nd_list, nd_summary_list, comment_dict
-
-'''
-date_list = get_crawling_list("2018-01-06")
-while len(date_list)!=0 :
-    nd_doc_list, nd_com_dict, date_list, error_list = naver_news_crawler(date_list)
-    print("nd_doc len :", len(nd_doc_list), "\tnd_com len :", len(nd_com_dict), "\terror_list len :",len(error_list))
-'''
