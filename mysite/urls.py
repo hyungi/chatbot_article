@@ -21,8 +21,19 @@ urlpatterns = [
 ]
 """
 
-from django.conf.urls import url, include
+from django.conf.urls import url
+from crawler import saveNews
+from django.contrib import admin
+from article import views, answers
+
  
 urlpatterns = [
-    url(r'',include('article.urls')),
-    ]
+
+    url(r'^crawler/', saveNews.startcrawling),
+    url(r'^keyboard/', views.keyboard),
+    url(r'^message', answers.message),
+    url(r'^admin/', admin.site.urls),
+    url(r'^friend$', views.add_friend),
+    url(r'^friend/(?P<user_key>\w+)$', views.del_friend),
+
+]

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Document,Document_summary,Sentiment_list,Comment,Requirement
-
+from .models import Requirement
+from crawler.models import Document, DocumentSummary, SentimentList, Comment
 admin.site.register(Document)
-admin.site.register(Document_summary)
-admin.site.register(Sentiment_list)
+admin.site.register(DocumentSummary)
+admin.site.register(SentimentList)
 admin.site.register(Comment)
 admin.site.register(Requirement)
 # Register your models here.

@@ -1,9 +1,9 @@
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
-from article.lists import *
-from article.getNews import *
+from crawler.getNews import *
 from article.models import *
+from article.lists import *
 '''
 /article/answer.py
 
@@ -59,7 +59,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : datelist
+                'buttons': yearlist
                 }
             })
     elif content == u"분야 고르기":
@@ -69,7 +69,7 @@ def message(request):
                 },
             'keyboard': {
                 'type': 'buttons',
-                'buttons' : categorylist
+                'buttons': categorylist
                 }
             })
     elif isPress:
@@ -79,13 +79,11 @@ def message(request):
         if is_Full(user_key):
             print("press and Full")
             date = year[user_key]+"년 "+month[user_key]+"월 "+day[user_key]+"일"
-            result = ""
-            result = press[user_key] +", "+date+", "+category[user_key]
-            rq = Requirement(user_key=user_key,press=press[user_key],date=date,category=category[user_key])
+            result = press[user_key] + ", " + date + ", " + category[user_key]
+            rq = Requirement(user_key=user_key, press=press[user_key], date=date, category=category[user_key])
             rq.save()
-            news_list = getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
+            getNews(press[user_key], year[user_key], month[user_key], day[user_key], category[user_key])
 
-            print(news_list)
             del press[user_key]
             del year[user_key]
             del month[user_key]
@@ -93,12 +91,12 @@ def message(request):
             del category[user_key]
             
             return JsonResponse({
-                'message':{
-                    'text':result+'선택이 모두 완료되었습니다.'+news_list
+                'message': {
+                    'text': result+'선택이 모두 완료되었습니다.'+news_list
                     },
-                'keyboard':{
-                    'type':'buttons',
-                    'buttons':menulist
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': menulist
                     }
                 })
         else:
@@ -122,21 +120,21 @@ def message(request):
                     'text': result+" 선택이 완료 되었습니다! 날짜를 택해 보시겠어요?"
                     },
                 'keyboard': {
-                'type': 'buttons',
-                'buttons' : yearlist
+                    'type': 'buttons',
+                    'buttons': yearlist
                     }
                 })
     elif isYear:
         year[user_key] = content
-        print("here is isYear "+ year[user_key] +"년")
+        print("here is isYear "+ year[user_key] + "년")
         
         if is_Full(user_key):
             print("Year and Full")
             date = year[user_key]+"년 "+month[user_key]+"월 "+day[user_key]+"일"
-            result = press[user_key] +", "+date+", "+category[user_key]
-            rq = Requirement(user_key=user_key,press=press[user_key],date=date,category=category[user_key])
+            result = press[user_key] + ", " + date + ", " + category[user_key]
+            rq = Requirement(user_key=user_key, press=press[user_key], date=date, category=category[user_key])
             rq.save()
-            news_list = getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
+            getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
 
             del press[user_key]
             del category[user_key]
@@ -144,26 +142,24 @@ def message(request):
             del month[user_key]
             del day[user_key]
 
-            print(news_list)
-
             return JsonResponse({
-                'message':{
-                    'text':result+'선택이 모두 완료되었습니다.'
+                'message': {
+                    'text': result+'선택이 모두 완료되었습니다.'
                     },
-                'keyboard':{
-                    'type':'buttons',
-                    'buttons':presslist
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': presslist
                     }
                 })       
         else:
             return JsonResponse({
-            'message': {
-                'text': year[user_key]+"년으로 선택이 완료 되었습니다. 몇월 인가요?"
-                },
-            'keyboard': {
-            'type': 'buttons',
-            'buttons' : monthlist
-                }
+                'message': {
+                    'text': year[user_key]+"년으로 선택이 완료 되었습니다. 몇월 인가요?"
+                    },
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': monthlist
+                    }
             })   
 
     elif isMonth:
@@ -177,7 +173,7 @@ def message(request):
             rq = Requirement(user_key=user_key,press=press[user_key],date=date,category=category[user_key])
             rq.save()
 
-            news_list = getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
+            getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
 
             del press[user_key]
             del category[user_key]
@@ -185,39 +181,36 @@ def message(request):
             del month[user_key]
             del day[user_key]
 
-            print(news_list)
-
             return JsonResponse({
-                'message':{
-                    'text':result+'선택이 모두 완료되었습니다.'
+                'message': {
+                    'text': result+'선택이 모두 완료되었습니다.'
                     },
-                'keyboard':{
-                    'type':'buttons',
-                    'buttons':presslist
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': presslist
                     }
                 })       
         else:
             return JsonResponse({
-            'message': {
-                'text': year[user_key]+"년 "+month[user_key]+" 월 선택이 완료 되었습니다! 며칠인가요?"
-                },
-            'keyboard': {
-            'type': 'buttons',
-            'buttons' : daylist
-                }
+                'message': {
+                    'text': year[user_key]+"년 "+month[user_key]+" 월 선택이 완료 되었습니다! 며칠인가요?"
+                    },
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': daylist
+                    }
             })   
     elif isDay:
         day[user_key] = content
-        print("here is isDay "+ day[user_key] +"일")
+        print("here is isDay " + day[user_key] + "일")
         
         if is_Full(user_key):
             print("Day and Full")
             date = year[user_key]+"년 "+month[user_key]+"월 "+day[user_key]+"일"
-            result = ""
-            result = press[user_key] +", "+date+", "+category[user_key]
+            result = press[user_key] + ", " + date + ", " + category[user_key]
             rq = Requirement(user_key=user_key,press=press[user_key],date=date,category=category[user_key])
             rq.save()
-            news_list = getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
+            getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
 
             del press[user_key]
             del category[user_key]
@@ -225,15 +218,13 @@ def message(request):
             del month[user_key]
             del day[user_key]
 
-            print(news_list)
-
             return JsonResponse({
-                'message':{
-                    'text':result+'선택이 모두 완료되었습니다.'
+                'message': {
+                    'text': result+'선택이 모두 완료되었습니다.'
                     },
-                'keyboard':{
-                    'type':'buttons',
-                    'buttons':presslist
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': presslist
                     }
                 })       
         else:
@@ -256,13 +247,13 @@ def message(request):
                 result += ", "
                 result += category.get(user_key)
             return JsonResponse({
-            'message': {
-                'text': result+" 선택이 완료 되었습니다! 분야를 선택해 보시겠어요?"
-                },
-            'keyboard': {
-            'type': 'buttons',
-            'buttons' : categorylist
-                }
+                'message': {
+                    'text': result+" 선택이 완료 되었습니다! 분야를 선택해 보시겠어요?"
+                    },
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': categorylist
+                    }
             })   
     
     elif isCategory:
@@ -275,7 +266,7 @@ def message(request):
             result = press[user_key] +", "+date+", "+category[user_key]
             rq = Requirement(user_key=user_key,press=press[user_key],date=date,category=category[user_key])
             rq.save()
-            news_list = getNews(press[user_key],year[user_key],month[user_key],day[user_key],category[user_key])
+            getNews(press[user_key], year[user_key], month[user_key], day[user_key], category[user_key])
 
             del press[user_key]
             del category[user_key]
@@ -283,15 +274,13 @@ def message(request):
             del month[user_key]
             del day[user_key]
 
-            print(news_list)
-
             return JsonResponse({
-                'message':{
-                    'text':result+'선택이 모두 완료되었습니다.'
+                'message': {
+                    'text': result+'선택이 모두 완료되었습니다.'
                     },
-                'keyboard':{
-                    'type':'buttons',
-                    'buttons':presslist
+                'keyboard': {
+                    'type': 'buttons',
+                    'buttons': presslist
                     }
                 }) 
         else:
@@ -319,17 +308,17 @@ def message(request):
                     'text': result+" 선택이 완료 되었습니다! 다른것을 선택해 보시겠어요?"
                     },
                 'keyboard': {
-                'type': 'buttons',
-                'buttons' : menulist
+                    'type': 'buttons',
+                    'buttons': menulist
                     }
                 }) 
-    else :
+    else:
         print("정의되지 않은 구문")
         return JsonResponse({
             'message': {'text':'죄송합니다 정의되지 않은 응답입니다.'},
-            'keyboard' : {
-                'type':'buttons',
-                'buttons' : menulist
+            'keyboard': {
+                'type': 'buttons',
+                'buttons': menulist
                 }
             })
 #신문사 이름중 하나인지 확인

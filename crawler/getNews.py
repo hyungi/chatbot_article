@@ -1,10 +1,7 @@
-from article.models import *
-from article.lists import *
-from django.utils import timezone
-from datetime import datetime, date, time, timedelta
+from crawler.models import *
 
 '''
-/article/getNews.py
+/crawler/getNews.py
 
 '''
 
@@ -17,7 +14,7 @@ def getNews(inputPress,inputYear,inputMonth,inputDay,inputCategory):
     
     :returns
     쿼리문에 의해 골라진 쿼리셋을 list 자료형으로 
-    casting 하여 리턴한다.
+    casting 하여 한 기사별로 출력한다.
     '''
     
     document = Document.objects.filter(press=inputPress)
@@ -26,7 +23,9 @@ def getNews(inputPress,inputYear,inputMonth,inputDay,inputCategory):
     document = document.filter(published_date__month=inputMonth)
     document = document.filter(published_date__day=inputDay)
 
-    return_document = document.values('title','text')
+    return_document = document.values('press', 'title', 'category')
     document_list = list(return_document)
-    return document_list
+    doc_list_len = len(document_list)
+    for i in range(doc_list_len):
+        print(document_list[i]['press']+", "+document_list[i]['title']+", "+document_list[i]['category'])
 

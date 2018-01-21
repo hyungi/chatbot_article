@@ -11,6 +11,7 @@ import re
 주어진 문서를 n줄로 요약하는 메소드인 get_n_summary와 문서에서 tfidf[count] vector[matrix]를 구하는 메소드 선언
 '''
 
+
 class text_rank:
     def __init__(self, text):
         self.text = nd.prettify_sentences(text)
@@ -39,14 +40,14 @@ class text_rank:
 
         sentences = (self.text).split(".")
 
-        #kkma = Kkma()
-        #remove_pos = "[(?P<조사>JK.*)(?P<접속조사>JC.*)(?P<전성어미>ET.*)(?P<종결어미>EF.*)(?P<연결어미>EC.*)(?P<접미사>XS.*)(?P<마침표물음표느낌표>SF.*)(?P<쉼표가운뎃점콜론빗금>SP.*)]" #kkma
+        # kkma = Kkma()
+        # remove_pos = "[(?P<조사>JK.*)(?P<접속조사>JC.*)(?P<전성어미>ET.*)(?P<종결어미>EF.*)(?P<연결어미>EC.*)(?P<접미사>XS.*)(?P<마침표물음표느낌표>SF.*)(?P<쉼표가운뎃점콜론빗금>SP.*)]" #kkma
         mecab = Mecab()
         remove_pos = "[(?P<조사>JK.*)(?P<접속조사>JC.*)(?P<전성어미>ET.*)(?P<종결어미>EF.*)(?P<연결어미>EC.*)(?P<접미사>XS.*)(?P<마침표물음표느낌표>SF.*)(?P<쉼표가운뎃점콜론빗금>SC.*)]"  # mecab
 
         stemmed_sentences = []
 
-        for sentence in sentences :
+        for sentence in sentences:
             # stemmed_words = kkma.pos(sentence)
             stemmed_words = mecab.pos(sentence)
             stemmed_words = [x[0] for x in stemmed_words if not bool(re.match(remove_pos, x[1]))]
@@ -54,8 +55,7 @@ class text_rank:
 
         return stemmed_sentences
 
-
-    def get_tfidf_vector(self) :
+    def get_tfidf_vector(self):
         '''
         어근 추출된 뉴스 기사의 단어 벡터와 그 단어들의 tfidf 값을 원소로 갖는 벡터를 반환한다. 
         :param text: 뉴스기사 텍스트 (string)
@@ -79,7 +79,6 @@ class text_rank:
 
         return feature_name, tfidf_vec
 
-
     def get_tfidf_matrix(self) :
         '''
         어근 추출된 뉴스 기사의 각 문장의 단어 리스트와 그 단어들의 tfidf 값을 원소로 갖는 행렬을 반환한다.
@@ -101,7 +100,6 @@ class text_rank:
         feature_name = tfidf.get_feature_names()
 
         return feature_name, tfidf_mat
-
 
     def get_count_vector(self) :
         '''
@@ -126,8 +124,7 @@ class text_rank:
 
         return feature_name, count_vec
 
-
-    def get_count_matrix(self) :
+    def get_count_matrix(self):
         '''
         어근 추출된 뉴스 기사의 단어 벡터와 그 단어들의 count 값을 원소로 갖는 행렬을 반환한다. 
         :param text: 뉴스기사 텍스트 (string)
@@ -149,8 +146,7 @@ class text_rank:
 
         return feature_name, count_vec
 
-
-    def get_textrank_from_text(self) :
+    def get_textrank_from_text(self):
         '''
         문장들의 tfidf 행렬을 이용해 각 문장들 간의 text rank graph를 구하고, 각 문장의 text rank 값을 계산한다.
         각 문장 번호와 textrank 값을 사전 형태로 반환한다.
@@ -179,8 +175,7 @@ class text_rank:
 
         return textrank_dictionary
 
-
-    def get_summary(self) :
+    def get_summary(self):
         '''
         반환된 index를 바탕으로 전체 뉴스 기사 중 가장 중요도 높은 문장을 순서대로 n개 저장한 리스트를 반환한다.
         :param text: 뉴스기사 텍스트 (string)

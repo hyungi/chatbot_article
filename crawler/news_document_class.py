@@ -2,10 +2,12 @@
 from konlpy.tag import Kkma
 from datetime import datetime, date, time
 from . import text_rank as tr
+
 '''
 뉴스 기사 정보를 저장할 class인 document와 document에 대한 감정 반응 정보를 담는 class 변수인 sentiment class 선언
 긁은 문장에서 \n을 제거하고, "."을 더한 다시 합치는 메소드인 prettify_sentences(text) 선언
 '''
+
 
 def prettify_sentences(text):
     '''
@@ -62,7 +64,7 @@ class Document:
 
     def print_document(self):
         '''
-        document 정보를 출력하는 메소드 
+        document 정보를 출력하는 메소드
         :return: None
         '''
         print("document_id :", self.document_id)
@@ -73,21 +75,32 @@ class Document:
         print("title :", self.title)
         print("text :", self.text)
         print("link :", self.link)
-#        print("sentiment_list :\n\t", end="")
+        print("sentiment_list :\n\t", end="")
         self.sentiment.print_sentiment()
+
+    def get_news_summary(self):
+        '''
+        n줄 요약된 내용 출력
+        :return:  상위 n개의 문장으로 이루어진 리스트 (list)
+        '''
+        temp = tr.text_rank(self.text)
+        summary = temp.get_summary()
+        return summary
 
 
 class Document_summary:
     '''
     한 번 처리한 정보에 대한 처리 비용과 시간을 줄이기 위해 뉴스 문서를 전처리한 데이터를 저장하는 class
-    각 문장의 text rank 값을 문장의 index순으로 나열한 list 형태로, 
-    상위 100개의 단어와 그 count, tfidf 값을 각각 key/value로 갖는 dictionary 형태로 저장한다. 
+    각 문장의 text rank 값을 문장의 index순으로 나열한 list 형태로,
+    상위 100개의 단어와 그 count, tfidf 값을 각각 key/value로 갖는 dictionary 형태로 저장한다.
     '''
     def __init__(self, document):
         self.document_id = document.document_id
         self.sentences_n = len((document.text).split("."))
 
         temp = tr.text_rank(document.text)
+        temp.select_summary_n()
+
         self.text_rank = temp.get_textrank_from_text()
 
         word_count = dict()
@@ -101,6 +114,7 @@ class Document_summary:
         for x, y in zip(tfidf_feature, tfidf_vec):
             word_tfidf[x] = y
         self.word_tfidf = word_tfidf
+        self.summary_text = temp.get_summary()
 
     def print_document_summary(self):
         '''
@@ -112,6 +126,7 @@ class Document_summary:
         print("text_rank :", self.text_rank)
         print("word_count :", self.word_count)
         print("word_tfidf :", self.word_tfidf)
+        print("summary_text :", self.summary_text)
 
 
 class Comment:
