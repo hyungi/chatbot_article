@@ -5,6 +5,7 @@ from django.utils import timezone
 
 '''
 
+
 class Requirement(models.Model):
     user_key = models.CharField(max_length=200,default="")
     press = models.CharField(max_length=200,default="")
@@ -13,4 +14,4 @@ class Requirement(models.Model):
     request_date = models.DateTimeField(default=timezone.now().strftime("%Y-%m-%d %H:%M"))
     
     def __str__(self):
-        return self.press+", " +self.date+", "+self.category
+        return self.press+", " + self.date+", "+self.category
