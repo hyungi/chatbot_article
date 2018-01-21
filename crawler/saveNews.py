@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.http import HttpResponseNotFound
 from requests import request
 
 import crawler.naver_news_crawler as cr
@@ -138,4 +138,5 @@ def startcrawling(self):
                 nd_summary_list[i].summary_text,
             )
 
-    return render(request, 'admin/', {})
+    return HttpResponseNotFound
+
