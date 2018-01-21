@@ -7,7 +7,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from datetime import datetime, timedelta
 from functools import singledispatch
 from bs4 import BeautifulSoup, element
-import news_document_class as nd
+from . import news_document_class as nd
 import re
 import time
 
