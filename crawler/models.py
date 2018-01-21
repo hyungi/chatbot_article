@@ -31,6 +31,7 @@ class DocumentSummary(models.Model):
         primary_key=True)
     sentences_n = models.IntegerField()
     text_rank = models.TextField()
+    # top_word = models.TextField()
     word_count = models.TextField()
     word_tfidf = models.TextField()
     summary_text = models.TextField()

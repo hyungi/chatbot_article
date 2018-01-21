@@ -1,4 +1,4 @@
-from crawler.models import *
+from .models import *
 
 '''
 /crawler/getNews.py

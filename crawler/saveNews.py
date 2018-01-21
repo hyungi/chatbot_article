@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from requests import request
 
-from crawler.models import *
 import crawler.naver_news_crawler as cr
 from article.models import *
-
+from crawler.models import *
 '''
 crawler/saveNews.py
  
