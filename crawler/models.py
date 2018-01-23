@@ -50,7 +50,10 @@ class SentimentList(models.Model):
 
 
 class Comment(models.Model):
-    document_id = models.ForeignKey(Document, on_delete=models.CASCADE)
+    document_id = models.OneToOneField(
+        Document,
+        on_delete=models.CASCADE,
+        primary_key=True)
     user_id = models.CharField(max_length=100, default="")
     content = models.TextField()
     published_date = models.DateTimeField()

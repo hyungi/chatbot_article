@@ -16,4 +16,3 @@ class Requirement(models.Model):
     def __str__(self):
         return self.press+", " + self.date+", "+self.category
 
-

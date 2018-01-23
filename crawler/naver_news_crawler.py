@@ -184,7 +184,7 @@ class crawler:
         :param path: selenium에서 사용할 driver가 저장된 위치, 사용 전 확인 후 변경 필요 (string)
         :return: 해당 댓글 정보가 담겨있는 html문서 (string)
         '''
-        sleep_time = 5
+        sleep_time = 1
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         options.add_argument('--no-sandbox')
@@ -193,7 +193,7 @@ class crawler:
         browser = webdriver.Remote(command_executor=executor_url, desired_capabilities=options.to_capabilities())
 
         browser.get(url)
-        time.sleep(sleep_time+0.5)
+        time.sleep(sleep_time+4)
         try:
             browser.find_element_by_class_name("lo_txt").click()
             time.sleep(sleep_time)

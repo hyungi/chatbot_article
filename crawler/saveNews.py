@@ -1,5 +1,4 @@
 from django.http import HttpResponseNotFound
-from requests import request
 
 import crawler.naver_news_crawler as cr
 from article.models import *
@@ -124,6 +123,21 @@ def startcrawling(self):
                 nd_doc_list[i].sentiment.angry,
                 nd_doc_list[i].sentiment.want,
             )
+
+            comment_dict_len = len(nd_comment_dict[nd_doc_list[i].document_id])
+            comment_dict_list = nd_comment_dict[nd_doc_list[i].document_id]
+
+            for j in range(comment_dict_len):
+
+                saveComment(
+                    doc_id,
+                    comment_dict_list[j].user_id,
+                    comment_dict_list[j].content,
+                    comment_dict_list[j].published_date,
+                    comment_dict_list[j].crawled_date,
+                    comment_dict_list[j].recomm,
+                    comment_dict_list[j].unrecomm,
+                )
 
         nd_summary_len = len(nd_summary_list)
         for i in range(nd_summary_len):
